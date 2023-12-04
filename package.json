@@ -1,0 +1,12 @@
+{
+  "name": "advent-of-code",
+  "scripts": {
+    "start": "vitest"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@types/node": "^20.10.3",
+    "typescript": "^5.3.2",
+    "vitest": "^0.34.6"
+  }
+}
