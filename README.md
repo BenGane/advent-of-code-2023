@@ -12,4 +12,5 @@ These are my TypeScript solutions for the [Advent of Code](https://adventofcode.
 
 1. `git clone https://github.com/Maxim-Mazurok/advent-of-code`
 1. (optional) `nvm i` - or use any other node version manager of choice
+1. `npm i`
 1. `npm start`
