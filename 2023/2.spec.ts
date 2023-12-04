@@ -4,17 +4,8 @@ import { beforeAll, it } from "vitest";
 
 let input: string;
 
-const numbersMap = new Map<string, number>();
-
-const numbers = "0123456789";
+const numbers = [..."0123456789"];
 const words = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
-
-[...numbers].forEach((_, index) => {
-    numbersMap[numbers[index]] = index;
-    numbersMap[words[index]] = index;
-})
-
-const keys = Object.keys(numbersMap);
 
 beforeAll(async () => {
     input = await readFile(join(__dirname, "2.input.txt"), "utf-8");
@@ -23,34 +14,31 @@ beforeAll(async () => {
 it("works", async () => {
     const lines = input.split("\n");
 
-    const totalCalibration = lines.reduce((accumulator, line, index) => {
-        let first: number;
-        let last = 0;
-        let cursor = 0;
+    const totalCalibration = lines.reduce((accumulator, line) => {
+        const firstNumbersFound = [...numbers].map(number => ({ index: line.indexOf(number), number })).filter(({ index }) => index !== -1);
+        const lastNumbersFound = [...numbers].map(number => ({ index: line.lastIndexOf(number), number })).filter(({ index }) => index !== -1);
 
-        for (let i = 0; i < line.length; i++) {
-            const slice = line.slice(cursor, i + 1);
-            console.log(slice);
+        firstNumbersFound.sort((a, b) => a.index - b.index);
+        lastNumbersFound.sort((a, b) => a.index - b.index);
 
-            if (keys.includes(slice)) {
-                first ??= numbersMap[slice];
-                last = numbersMap[slice];
-                cursor = i;
-            }
+        const firstWordsFound = words.map(word => ({ index: line.indexOf(word), word: word })).filter(({ index }) => index !== -1);
+        const lastWordsFound = words.map(word => ({ index: line.lastIndexOf(word), word: word })).filter(({ index }) => index !== -1);
 
-            if (!keys.some((key) => key.startsWith(slice))) {
-                cursor = i;
-            }
+        firstWordsFound.sort((a, b) => a.index - b.index);
+        lastWordsFound.sort((a, b) => a.index - b.index);
 
-            if (keys.includes(line[i])) {
-                first ??= numbersMap[line[i]];
-                last = numbersMap[line[i]];
-            }
-        }
+        const firstWord = firstWordsFound[0] ?? { index: Infinity };
+        const lastWord = lastWordsFound[lastWordsFound.length - 1] ?? { index: -Infinity};
 
-        console.log(line, "->",  numbersMap[first!] * 10 + numbersMap[last])
+        const firstNumber = firstNumbersFound[0] ?? { index: Infinity };
+        const lastNumber = lastNumbersFound[lastNumbersFound.length - 1] ?? { index: -Infinity };
 
-        return accumulator + numbersMap[first!] * 10 + numbersMap[last];
+        const first = firstWord?.index <= firstNumber?.index ? words.indexOf(firstWord.word) : +firstNumber.number; 
+        const last = lastWord?.index >= lastNumber?.index ? words.indexOf(lastWord.word) : +lastNumber.number; 
+
+        console.log(line, first * 10 + last);
+
+        return accumulator + first * 10 + last;
     }, 0);
 
     console.log(totalCalibration)
