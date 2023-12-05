@@ -21,8 +21,8 @@ it("works", async () => {
         firstNumbersFound.sort((a, b) => a.index - b.index);
         lastNumbersFound.sort((a, b) => a.index - b.index);
 
-        const firstWordsFound = words.map(word => ({ index: line.indexOf(word), word: word })).filter(({ index }) => index !== -1);
-        const lastWordsFound = words.map(word => ({ index: line.lastIndexOf(word), word: word })).filter(({ index }) => index !== -1);
+        const firstWordsFound = words.map(word => ({ index: line.indexOf(word), word })).filter(({ index }) => index !== -1);
+        const lastWordsFound = words.map(word => ({ index: line.lastIndexOf(word), word })).filter(({ index }) => index !== -1);
 
         firstWordsFound.sort((a, b) => a.index - b.index);
         lastWordsFound.sort((a, b) => a.index - b.index);
