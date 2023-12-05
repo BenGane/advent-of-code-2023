@@ -20,40 +20,37 @@ it("works", async () => {
         const toKey = keys[1];
 
         const mappings = sections[1].trim().split("\n");
-        const sourceRangeToDestinationRangeMapping = Object.fromEntries((() => {
-            const entries: [number, number][] = [];
-            for (let i = 0; i <= 99; i++) {
-                entries.push([i, i]);
-            }
-            return entries;
-        })());
+        const values: {destinationRangeStart: number, sourceRangeStart: number, rangeLength: number}[] = [];
 
         for (const mapping of mappings) {
             const [destinationRangeStart, sourceRangeStart, rangeLength] = mapping.split(" ").map(value => +value);
 
-            for (let i = 0; i < rangeLength; i++) {
-                sourceRangeToDestinationRangeMapping[sourceRangeStart + i] = destinationRangeStart + i;
-            }
+            values.push({ destinationRangeStart, sourceRangeStart, rangeLength });
         }
 
-        return { [fromKey]: { [toKey]: sourceRangeToDestinationRangeMapping }}
+        return { [fromKey]: { [toKey]: values }}
     }
 
     const seeds = segments[0].split(":")[1].trim().split(" ");
-    let mappings: Record<string, Record<string, Record<string, number>>> = {};
+    let mappings: ReturnType<typeof createMapping> = {};
 
     for (const segment of segments.slice(1)) {
         // Maintain mapping ordering here
         mappings = { ...mappings, ...createMapping(segment) };
     }
 
-
-
     const findLocation = (seed: string) => {
         let location = +seed;
         for (const fromKey of Object.keys(mappings)) {
             const toKey = Object.keys(mappings[fromKey])[0]; // single mapping for now, might have more in question 2?
-            location = mappings[fromKey][toKey][location];
+            const values = mappings[fromKey][toKey];
+
+            for (const { destinationRangeStart, sourceRangeStart, rangeLength} of values) {
+                if (location >= sourceRangeStart && location <= sourceRangeStart + rangeLength) {
+                    location += destinationRangeStart - sourceRangeStart;
+                    break;
+                }
+            }
         }
         return location;
     }
@@ -62,5 +59,6 @@ it("works", async () => {
     for (const seed of seeds) {
         minimumLocation = Math.min(minimumLocation, findLocation(seed));
     }
+
     console.log(minimumLocation);
 });
