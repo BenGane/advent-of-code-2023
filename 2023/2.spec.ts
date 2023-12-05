@@ -36,8 +36,6 @@ it("works", async () => {
         const first = firstWord?.index <= firstNumber?.index ? words.indexOf(firstWord.word) : +firstNumber.number; 
         const last = lastWord?.index >= lastNumber?.index ? words.indexOf(lastWord.word) : +lastNumber.number; 
 
-        console.log(line, first * 10 + last);
-
         return accumulator + first * 10 + last;
     }, 0);
 
