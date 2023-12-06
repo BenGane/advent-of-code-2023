@@ -21,8 +21,8 @@ const waysToBeatRecord = ({ time, distance }: { time: number, distance: number }
 it("works", async () => {
     const lines = input.split("\n");
     
-    const time = +lines[0].split(":")[1].trim().split(/\s+/).join("");
-    const distance = +lines[1].split(":")[1].trim().split(/\s+/).join("");
+    const time = +lines[0].split(":")[1].replace(/\s+/g, "");
+    const distance = +lines[1].split(":")[1].replace(/\s+/g, "");
 
     const total = waysToBeatRecord({ time, distance });
     
