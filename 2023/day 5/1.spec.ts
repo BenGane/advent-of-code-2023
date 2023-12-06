@@ -46,7 +46,7 @@ it("works", async () => {
             const values = mappings[fromKey][toKey];
 
             for (const { destinationRangeStart, sourceRangeStart, rangeLength} of values) {
-                if (location >= sourceRangeStart && location <= sourceRangeStart + rangeLength) {
+                if (location >= sourceRangeStart && location < sourceRangeStart + rangeLength) {
                     location += destinationRangeStart - sourceRangeStart;
                     break;
                 }
