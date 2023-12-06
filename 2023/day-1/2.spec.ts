@@ -11,6 +11,8 @@ beforeAll(async () => {
     input = await readFile(join(__dirname, "2.input.txt"), "utf-8");
 });
 
+
+// Disclaimer to reader: I'm aware this solution is cooked 
 it("works", async () => {
     const lines = input.split("\n");
 
