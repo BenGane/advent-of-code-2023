@@ -34,4 +34,6 @@ it("works", async () => {
         const powerSet = Object.values(minimums).reduce((total, minimum) => total *= minimum, 1);
         return accumulator + powerSet;
     }, 0);
+
+    console.log(result);
 });
