@@ -35,14 +35,13 @@ it("works", async () => {
     let mappings: ReturnType<typeof createMapping> = {};
 
     for (const segment of segments.slice(1)) {
-        // Maintain mapping ordering here
         mappings = { ...mappings, ...createMapping(segment) };
     }
 
     const findLocation = (seed: string) => {
         let location = +seed;
         for (const fromKey of Object.keys(mappings)) {
-            const toKey = Object.keys(mappings[fromKey])[0]; // single mapping for now, might have more in question 2?
+            const toKey = Object.keys(mappings[fromKey])[0];
             const values = mappings[fromKey][toKey];
 
             for (const { destinationRangeStart, sourceRangeStart, rangeLength} of values) {

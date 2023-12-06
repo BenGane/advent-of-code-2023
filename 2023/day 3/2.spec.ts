@@ -12,7 +12,6 @@ it("works", async () => {
     const isNumber = (string: string) => /^\d+$/.test(string);
     const lines = input.split("\n").map(line => `${line}.`);
 
-    // { [row]: [col] : [456, 221, 123] }
     const gearMap = {};
 
     for (let row = 0; row < lines.length; row++) {

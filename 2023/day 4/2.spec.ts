@@ -26,9 +26,3 @@ it("works", async () => {
     const total = copies.reduce((accumulator, count) => accumulator + count, 0);
     console.log(total);
 });
-
-/*
-[1]
-[1, 2, 2, 2, 2, 1]
-[1, 2, 4, 4, 2, 1]
-*/
