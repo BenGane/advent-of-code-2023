@@ -8,6 +8,7 @@ beforeAll(async () => {
     input = await readFile(join(__dirname, "2.input.txt"), "utf-8");
 });
 
+// TODO: Optimize... Current brute force solution takes ~10 minutes to run.... smh
 it.todo("works", async () => {
     const segments = input.split("\n\n");
 

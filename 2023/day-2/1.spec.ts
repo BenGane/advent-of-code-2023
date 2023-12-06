@@ -17,7 +17,7 @@ it("works", async () => {
             matches: segments?.[2].split(';').map((match) => { 
                 const cubes = match.trim().split(', ')
 
-                return Object.fromEntries(cubes.map((cube) => [cube.split(" ")[1],  +cube.split(" ")[0]]));
+                return Object.fromEntries(cubes.map((cube) => [cube.split(" ")[1], +cube.split(" ")[0]]));
             }) ?? []
         }
     });
