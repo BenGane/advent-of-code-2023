@@ -25,5 +25,6 @@ it("works", async () => {
     const distance = +lines[1].split(":")[1].trim().split(/\s+/).join("");
 
     const total = waysToBeatRecord({ time, distance });
+    
     console.log(total);
 });
