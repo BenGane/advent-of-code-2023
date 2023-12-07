@@ -5,12 +5,19 @@ import { beforeAll, it } from "vitest";
 let input: string;
 
 beforeAll(async () => {
-    input = await readFile(join(__dirname, "1.input.txt"), "utf-8");
+    input = await readFile(join(__dirname, "2.input.txt"), "utf-8");
 });
 
-const cardHierarchy = "AKQT987654321"; // cspell: ignore AKQT
+const cardHierarchy = "AKQT987654321J"; // cspell: ignore AKQT
+
+const optimizeHand = (hand: string) => {
+    const bestCard = [...hand].reduce((previous, next) => cardHierarchy.indexOf(next) < cardHierarchy.indexOf(previous) ? next : previous);
+    return hand.replace(/J/g, bestCard);
+}
 
 const getHandRank = (hand: string) => {
+    hand = hand.includes("J") ? optimizeHand(hand) : hand;
+
     const cardMap = new Map<string, number>();
     [...hand].forEach((card) => {
         cardMap.set(card, (cardMap.get(card) ?? 0) + 1);
