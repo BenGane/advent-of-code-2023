@@ -1,12 +1,8 @@
 import { readFile } from "fs/promises";
 import { join } from "path";
-import { beforeAll, it } from "vitest";
+import { it } from "vitest";
 
-let input: string;
-
-beforeAll(async () => {
-  input = await readFile(join(__dirname, "2.input.txt"), "utf-8");
-});
+type Data = { hand: string; bid: number }[];
 
 const cardHierarchy = "AKQT987654321J"; // cspell: ignore AKQT
 
@@ -58,7 +54,7 @@ const compareHands = (handA: string, handB: string) => {
   return 0;
 };
 
-const computeTotalWinnings = (data: { hand: string; bid: number }[]) =>
+const computeTotalWinnings = (data: Data) =>
   data
     .sort(({ hand: a }, { hand: b }) => compareHands(a, b))
     .reduce(
@@ -66,14 +62,21 @@ const computeTotalWinnings = (data: { hand: string; bid: number }[]) =>
       0,
     );
 
-it("works", () => {
-  const lines = input.split("\n");
-  const data: { hand: string; bid: number }[] = [];
+const parseInputFile = async () => {
+  const input = await readFile(join(__dirname, "2.input.txt"), "utf-8");
+  const data: Data = [];
 
-  for (const line of lines) {
+  for (const line of input.split("\n")) {
     const [hand, bid] = line.split(" ");
     data.push({ hand, bid: Number.parseInt(bid) });
   }
 
-  console.log(computeTotalWinnings(data));
+  return data;
+};
+
+it("works", async () => {
+  const data = await parseInputFile();
+  const result = computeTotalWinnings(data);
+
+  console.log(result);
 });
