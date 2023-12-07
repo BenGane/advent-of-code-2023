@@ -50,10 +50,7 @@ const compareHands = (handA: string, handB: string) => {
 const computeTotalWinnings = (data: Data) =>
   data
     .sort(({ hand: a }, { hand: b }) => compareHands(a, b))
-    .reduce(
-      (total, { bid }, i) => total + bid * (i + 1),
-      0,
-    );
+    .reduce((total, { bid }, i) => total + bid * (i + 1), 0);
 
 const parseInputFile = async () => {
   const input = await readFile(join(__dirname, "2.input.txt"), "utf-8");
