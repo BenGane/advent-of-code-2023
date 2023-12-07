@@ -10,13 +10,7 @@ beforeAll(async () => {
 
 const cardHierarchy = "AKQT987654321J"; // cspell: ignore AKQT
 
-const getCardMap = (hand: string) => {
-  const cardMap = new Map<string, number>();
-  [...hand].forEach((card) => {
-    cardMap.set(card, (cardMap.get(card) ?? 0) + 1);
-  });
-  return cardMap;
-};
+const getCardMap = (hand: string) => [...hand].reduce((map, card) => map.set(card, (map.get(card) ?? 0) + 1), new Map<string, number>())
 
 const getHandRank = (hand: string) => {
   const cardMap = getCardMap(hand);
