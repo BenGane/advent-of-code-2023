@@ -10,18 +10,30 @@ beforeAll(async () => {
 
 const cardHierarchy = "AKQT987654321J"; // cspell: ignore AKQT
 
+const getCardMap = (hand: string) => {
+    const cardMap = new Map<string, number>();
+    [...hand].forEach((card) => {
+        cardMap.set(card, (cardMap.get(card) ?? 0) + 1);
+    });
+    return cardMap;
+}
+
+const getBestCardFromCardMap = (cardMap: Map<string, number>) => {
+    const maxCardOccurrences = Math.max(...cardMap.values()) 
+    const targetCards = ([...cardMap.values()].filter((count) => count === 2).length === 2 ? [...cardMap.keys()].filter((card) => cardMap.get(card) === 2) : [...cardMap.keys()]).filter((card) => cardMap.get(card) === maxCardOccurrences);
+
+    return targetCards.reduce((previous, next) => cardHierarchy.indexOf(next) < cardHierarchy.indexOf(previous) ? next : previous);
+}
+
 const optimizeHand = (hand: string) => {
-    const bestCard = [...hand].reduce((previous, next) => cardHierarchy.indexOf(next) < cardHierarchy.indexOf(previous) ? next : previous);
+    const cardMap = getCardMap(hand);
+    const bestCard = getBestCardFromCardMap(cardMap);
     return hand.replace(/J/g, bestCard);
 }
 
 const getHandRank = (hand: string) => {
     hand = hand.includes("J") ? optimizeHand(hand) : hand;
-
-    const cardMap = new Map<string, number>();
-    [...hand].forEach((card) => {
-        cardMap.set(card, (cardMap.get(card) ?? 0) + 1);
-    });
+    const cardMap = getCardMap(hand);
 
     switch (cardMap.size) {
         case 1:
