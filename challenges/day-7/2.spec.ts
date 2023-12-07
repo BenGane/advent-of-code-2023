@@ -46,9 +46,9 @@ const compareHands = (handA: string, handB: string) => {
 
     if (aRank !== bRank) return bRank - aRank;
 
-    for (let index = 0; index < handA.length; index++) {
-        const cardAValue = cardHierarchy.indexOf(handA[index]);
-        const cardBValue = cardHierarchy.indexOf(handB[index]);
+    for (let i = 0; i < handA.length; i++) {
+        const cardAValue = cardHierarchy.indexOf(handA[i]);
+        const cardBValue = cardHierarchy.indexOf(handB[i]);
         
         if (cardAValue !== cardBValue) return cardBValue - cardAValue;
     }
@@ -56,10 +56,8 @@ const compareHands = (handA: string, handB: string) => {
     return 0;
 }
 
-const computeTotalWinnings = (data: { hand: string, bid: number }[]) => {
-    data.sort(({ hand: a }, { hand: b}) => compareHands(a, b));
-    return data.reduce((accumulator, { bid }, index) => accumulator + bid * (index + 1), 0);
-};
+const computeTotalWinnings = (data: { hand: string, bid: number }[]) => 
+    data.sort(({ hand: a }, { hand: b}) => compareHands(a, b)).reduce((accumulator, { bid }, index) => accumulator + bid * (index + 1), 0);
 
 it("works", () => {
     const lines = input.split("\n");
