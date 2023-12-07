@@ -58,7 +58,7 @@ const computeTotalWinnings = (data: Data) =>
   data
     .sort(({ hand: a }, { hand: b }) => compareHands(a, b))
     .reduce(
-      (accumulator, { bid }, index) => accumulator + bid * (index + 1),
+      (total, { bid }, i) => total + bid * (i + 1),
       0,
     );
 
