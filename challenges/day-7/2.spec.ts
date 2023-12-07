@@ -45,10 +45,10 @@ const getBestHandRank = (hand: string) =>
   );
 
 const compareHands = (handA: string, handB: string) => {
-  const aRank = getBestHandRank(handA);
-  const bRank = getBestHandRank(handB);
+  const rankA = getBestHandRank(handA);
+  const rankB = getBestHandRank(handB);
 
-  if (aRank !== bRank) return bRank - aRank;
+  if (rankA !== rankB) return rankB - rankA;
 
   for (let i = 0; i < handA.length; i++) {
     const cardAValue = cardHierarchy.indexOf(handA[i]);
