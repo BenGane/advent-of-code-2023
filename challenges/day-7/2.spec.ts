@@ -4,7 +4,7 @@ import { it } from "vitest";
 
 type Data = { hand: string; bid: number }[];
 
-const cardHierarchy = "AKQT987654321J"; // cspell: ignore AKQT
+const cardHierarchy = "AKQJT987654321J";
 
 const getCardMap = (hand: string) =>
   [...hand].reduce(
