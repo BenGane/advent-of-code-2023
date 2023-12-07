@@ -18,21 +18,7 @@ const getCardMap = (hand: string) => {
     return cardMap;
 }
 
-const getBestCardFromCardMap = (cardMap: Map<string, number>) => {
-    const maxCardOccurrences = Math.max(...cardMap.values()) 
-    const targetCards = ([...cardMap.values()].filter((count) => count === 2).length === 2 ? [...cardMap.keys()].filter((card) => cardMap.get(card) === 2) : [...cardMap.keys()]).filter((card) => cardMap.get(card) === maxCardOccurrences);
-
-    return targetCards.reduce((previous, next) => cardHierarchy.indexOf(next) < cardHierarchy.indexOf(previous) ? next : previous);
-}
-
-const optimizeHand = (hand: string) => {
-    const cardMap = getCardMap(hand);
-    const bestCard = getBestCardFromCardMap(cardMap);
-    return hand.replace(/J/g, bestCard);
-}
-
 const getHandRank = (hand: string) => {
-    hand = hand.includes("J") ? optimizeHand(hand) : hand;
     const cardMap = getCardMap(hand);
 
     switch (cardMap.size) {
@@ -51,9 +37,12 @@ const getHandRank = (hand: string) => {
     }
 }
 
+const getBestHandRank = (hand: string) => 
+    [...cardHierarchy].reduce((bestRank, currentCard) => Math.min(getHandRank(hand.replace(/J/g, currentCard)), bestRank), Infinity);
+
 const compareHands = (handA: string, handB: string) => {
-    const aRank = getHandRank(handA);
-    const bRank = getHandRank(handB);
+    const aRank = getBestHandRank(handA);
+    const bRank = getBestHandRank(handB);
 
     if (aRank !== bRank) return bRank - aRank;
 
