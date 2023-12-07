@@ -8,7 +8,7 @@ beforeAll(async () => {
     input = await readFile(join(__dirname, "1.input.txt"), "utf-8");
 });
 
-const cardHierarchy = "AKQT987654321"; // cspell: ignore AKQT
+const cardHierarchy = "AKQJT987654321"; // cspell: ignore AKQT
 
 const getCardMap = (hand: string) => {
     const cardMap = new Map<string, number>();
