@@ -29,9 +29,7 @@ it("works", async () => {
 
       if (isNumber(symbol)) {
         cursorLeft = isNumber(lines[row][cursorLeft]) ? cursorLeft : col;
-        cursorRight = isNumber(lines[row][cursorRight])
-          ? cursorRight + 1
-          : col + 1;
+        cursorRight = isNumber(lines[row][cursorRight]) ? cursorRight + 1 : col + 1;
       }
 
       const slice = lines[row].slice(cursorLeft, cursorRight);

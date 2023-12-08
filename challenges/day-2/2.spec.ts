@@ -18,9 +18,7 @@ it("works", async () => {
         segments?.[2].split(";").map((match) => {
           const cubes = match.trim().split(", ");
 
-          return Object.fromEntries(
-            cubes.map((cube) => [cube.split(" ")[1], +cube.split(" ")[0]]),
-          );
+          return Object.fromEntries(cubes.map((cube) => [cube.split(" ")[1], +cube.split(" ")[0]]));
         }) ?? [],
     };
   });
@@ -30,17 +28,11 @@ it("works", async () => {
 
     game.matches.forEach((match) => {
       Object.keys(minimums).forEach((color) => {
-        minimums[color] = Math.max(
-          match[color] ?? minimums[color],
-          minimums[color],
-        );
+        minimums[color] = Math.max(match[color] ?? minimums[color], minimums[color]);
       });
     });
 
-    const powerSet = Object.values(minimums).reduce(
-      (total, minimum) => (total *= minimum),
-      1,
-    );
+    const powerSet = Object.values(minimums).reduce((total, minimum) => (total *= minimum), 1);
     return accumulator + powerSet;
   }, 0);
 

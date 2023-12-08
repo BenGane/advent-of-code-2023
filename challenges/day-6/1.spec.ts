@@ -8,13 +8,7 @@ beforeAll(async () => {
   input = await readFile(join(__dirname, "1.input.txt"), "utf-8");
 });
 
-const waysToBeatRecord = ({
-  time,
-  distance,
-}: {
-  time: number;
-  distance: number;
-}) => {
+const waysToBeatRecord = ({ time, distance }: { time: number; distance: number }) => {
   let numberOfWaysToBeatRecord = 0;
 
   for (let i = 1; i < time; i++) {
@@ -39,9 +33,7 @@ it("works", async () => {
     .map((distance) => +distance);
 
   const total = times.reduce(
-    (accumulator, _, index) =>
-      accumulator *
-      waysToBeatRecord({ time: times[index], distance: distances[index] }),
+    (accumulator, _, index) => accumulator * waysToBeatRecord({ time: times[index], distance: distances[index] }),
     1,
   );
 

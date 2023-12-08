@@ -29,9 +29,7 @@ it("works", async () => {
 
       if (isNumber(symbol)) {
         cursorLeft = isNumber(lines[row][cursorLeft]) ? cursorLeft : col;
-        cursorRight = isNumber(lines[row][cursorRight])
-          ? cursorRight + 1
-          : col + 1;
+        cursorRight = isNumber(lines[row][cursorRight]) ? cursorRight + 1 : col + 1;
       }
 
       const slice = lines[row].slice(cursorLeft, cursorRight);
@@ -43,8 +41,7 @@ it("works", async () => {
           for (let j = cursorLeft - 1; j <= cursorRight; j++) {
             const surroundingSymbol = lines[i]?.[j];
             if (isNumber(surroundingSymbol)) continue;
-            isPart ||=
-              surroundingSymbol !== undefined && surroundingSymbol !== ".";
+            isPart ||= surroundingSymbol !== undefined && surroundingSymbol !== ".";
           }
         }
 

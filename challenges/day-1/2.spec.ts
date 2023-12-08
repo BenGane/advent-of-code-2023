@@ -5,18 +5,7 @@ import { beforeAll, it } from "vitest";
 let input: string;
 
 const numbers = [..."0123456789"];
-const words = [
-  "zero",
-  "one",
-  "two",
-  "three",
-  "four",
-  "five",
-  "six",
-  "seven",
-  "eight",
-  "nine",
-];
+const words = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
 
 beforeAll(async () => {
   input = await readFile(join(__dirname, "2.input.txt"), "utf-8");
@@ -57,14 +46,8 @@ it("works", async () => {
       index: -Infinity,
     };
 
-    const first =
-      firstWord?.index <= firstNumber?.index
-        ? words.indexOf(firstWord.word)
-        : +firstNumber.number;
-    const last =
-      lastWord?.index >= lastNumber?.index
-        ? words.indexOf(lastWord.word)
-        : +lastNumber.number;
+    const first = firstWord?.index <= firstNumber?.index ? words.indexOf(firstWord.word) : +firstNumber.number;
+    const last = lastWord?.index >= lastNumber?.index ? words.indexOf(lastWord.word) : +lastNumber.number;
 
     return accumulator + first * 10 + last;
   }, 0);

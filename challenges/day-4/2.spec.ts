@@ -24,15 +24,9 @@ it("works", async () => {
       .trim()
       .split(/\s+/)
       .map((winningNumber) => +winningNumber);
-    const matchingNumbers = myNumbers.filter((myNumber) =>
-      winningNumbers.includes(myNumber),
-    );
+    const matchingNumbers = myNumbers.filter((myNumber) => winningNumbers.includes(myNumber));
 
-    for (
-      let j = i + 1;
-      j <= Math.min(lines.length - 1, i + matchingNumbers.length);
-      j++
-    ) {
+    for (let j = i + 1; j <= Math.min(lines.length - 1, i + matchingNumbers.length); j++) {
       copies[j] += copies[i];
     }
   }
