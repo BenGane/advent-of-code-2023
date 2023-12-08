@@ -6,8 +6,8 @@ type Node = string;
 type Network = Map<Node, [Node, Node]>;
 type Data = { instructions: string, network: Network };
 
-const isStartingNode = (node: string) => node.endsWith('A');
-const isFinishingNode = (node: string) => node.endsWith('Z');
+const isStartingNode = (node: Node) => node.endsWith('A');
+const isFinishingNode = (node: Node) => node.endsWith('Z');
 
 const getGreatestCommonDivisor = (a: number, b: number) =>  b === 0 ? a : getGreatestCommonDivisor(b, a % b);
 const getLeastCommonMultiple = (a: number, b: number) => a * b / getGreatestCommonDivisor(a, b);
