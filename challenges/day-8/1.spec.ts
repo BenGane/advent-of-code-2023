@@ -4,28 +4,33 @@ import { it } from "vitest";
 
 type Node = string;
 type Network = Map<Node, [Node, Node]>;
-type Data = { instructions: string, network: Network };
+type Data = { instructions: string; network: Network };
 
-const targetNode = 'ZZZ';
-const startingNode = 'AAA';
+const targetNode = "ZZZ";
+const startingNode = "AAA";
 
-const getNextNode = (node: Node, instruction: string, network: Network) => network.get(node)![instruction === 'L' ? 0 : 1];
+const getNextNode = (node: Node, instruction: string, network: Network) =>
+  network.get(node)![instruction === "L" ? 0 : 1];
 
 const computeSteps = ({ instructions, network }: Data) => {
   let steps = 0;
   let node = startingNode;
-  
+
   while (node !== targetNode) {
-    node = getNextNode(node, instructions[steps % instructions.length], network)
+    node = getNextNode(
+      node,
+      instructions[steps % instructions.length],
+      network,
+    );
     steps++;
   }
 
   return steps;
-}
+};
 
 const parseInputFile = async () => {
   const input = await readFile(join(__dirname, "1.input.txt"), "utf-8");
-  const lines = input.split('\n\n');
+  const lines = input.split("\n\n");
 
   const instructions = lines[0];
   const network = new Map<Node, [Node, Node]>();
@@ -42,7 +47,7 @@ const parseInputFile = async () => {
 
 it("works", async () => {
   const data = await parseInputFile();
-  const result = computeSteps(data); 
+  const result = computeSteps(data);
 
   console.log(result);
 });
