@@ -5,16 +5,7 @@ import { it } from "vitest";
 type Data = { instructions: string, directions: Map<string, [string, string]> };
 
 const computeSteps = ({ instructions, directions }: Data) => {
-  let steps = 0;
-  let cursor = 'AAA';
-  
-  while (cursor !== 'ZZZ') {
-    const conversion = instructions[steps % instructions.length] === 'L' ? 0 : 1;
-    cursor = directions.get(cursor)![conversion];
-    steps++;
-  }
-
-  return steps;
+  // TODO
 }
 
 const parseInputFile = async () => {
