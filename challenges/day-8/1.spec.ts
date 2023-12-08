@@ -4,13 +4,20 @@ import { it } from "vitest";
 
 type Data = { instructions: string, directions: Map<string, [string, string]> };
 
+const targetCursor = 'ZZZ';
+const startingCursor = 'AAA';
+
+const getDirectionIndex = (instruction: string) => instruction === 'L' ? 0 : 1;
+
 const computeSteps = ({ instructions, directions }: Data) => {
   let steps = 0;
-  let cursor = 'AAA';
+  let cursor = startingCursor;
   
-  while (cursor !== 'ZZZ') {
-    const conversion = instructions[steps % instructions.length] === 'L' ? 0 : 1;
-    cursor = directions.get(cursor)![conversion];
+  while (cursor !== targetCursor) {
+    const instruction = instructions[steps % instructions.length];
+    const directionIndex = getDirectionIndex(instruction);
+    
+    cursor = directions.get(cursor)![directionIndex];
     steps++;
   }
 
