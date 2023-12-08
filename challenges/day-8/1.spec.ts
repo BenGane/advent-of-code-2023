@@ -2,22 +2,21 @@ import { readFile } from "fs/promises";
 import { join } from "path";
 import { it } from "vitest";
 
-type Data = { instructions: string, directions: Map<string, [string, string]> };
+type Node = string;
+type Network = Map<Node, [Node, Node]>;
+type Data = { instructions: string, network: Network };
 
 const targetNode = 'ZZZ';
 const startingNode = 'AAA';
 
-const getDirectionIndex = (instruction: string) => instruction === 'L' ? 0 : 1;
+const getNextNode = (node: Node, instruction: string, network: Network) => network.get(node)![instruction === 'L' ? 0 : 1];
 
-const computeSteps = ({ instructions, directions }: Data) => {
+const computeSteps = ({ instructions, network }: Data) => {
   let steps = 0;
-  let cursor = startingNode;
+  let node = startingNode;
   
-  while (cursor !== targetNode) {
-    const instruction = instructions[steps % instructions.length];
-    const directionIndex = getDirectionIndex(instruction);
-
-    cursor = directions.get(cursor)![directionIndex];
+  while (node !== targetNode) {
+    node = getNextNode(node, instructions[steps % instructions.length], network)
     steps++;
   }
 
@@ -29,16 +28,16 @@ const parseInputFile = async () => {
   const lines = input.split('\n\n');
 
   const instructions = lines[0];
-  const directions = new Map<string, [string, string]>();
+  const network = new Map<Node, [Node, Node]>();
 
   for (const entry of lines[1].split("\n")) {
     const segments = entry.split(" = ");
     const key = segments[0];
     const [left, right] = segments[1].replace(/[\(\),]/g, "").split(" ");
-    directions.set(key, [left, right]);
+    network.set(key, [left, right]);
   }
 
-  return { instructions, directions };
+  return { instructions, network };
 };
 
 it("works", async () => {
