@@ -4,8 +4,26 @@ import { it } from "vitest";
 
 type Data = { instructions: string, directions: Map<string, [string, string]> };
 
+const getGreatestCommonDivisor = (a: number, b: number) =>  b === 0 ? a : getGreatestCommonDivisor(b, a % b);
+const getLeastCommonMultiple = (a: number, b: number) => a * b / getGreatestCommonDivisor(a, b);
+
 const computeSteps = ({ instructions, directions }: Data) => {
-  // TODO
+  const cursors = [...directions.keys()].filter((key) => key.endsWith('A'));
+  const minimumDistances = cursors.map(() => Infinity);
+
+  let steps = 0;
+  while (minimumDistances.includes(Infinity)) {
+    const directionIndex = instructions[steps % instructions.length] === 'L' ? 0 : 1;
+    for (let i = 0; i < cursors.length; i++) {
+      cursors[i] = directions.get(cursors[i])![directionIndex];
+      if (cursors[i].endsWith('Z')) {
+        minimumDistances[i] = Math.min(minimumDistances[i], steps + 1);
+      }
+    }
+    steps++;
+  }
+
+  return minimumDistances.reduce((accumulator, distance) => getLeastCommonMultiple(accumulator, distance), 1);
 }
 
 const parseInputFile = async () => {
