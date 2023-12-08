@@ -26,7 +26,7 @@ const computeSteps = ({ instructions, network }: Data) => {
     steps++;
   }
 
-  return minimumDistances.reduce((accumulator, distance) => getLeastCommonMultiple(accumulator, distance), 1);
+  return minimumDistances.reduce((leastCommonMultiple, distance) => getLeastCommonMultiple(leastCommonMultiple, distance), 1);
 }
 
 const parseInputFile = async () => {
