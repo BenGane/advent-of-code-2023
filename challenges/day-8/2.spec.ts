@@ -22,20 +22,20 @@ const computeSteps = ({ instructions, network }: Data) => {
   const nodes = [...network.keys()].filter((node) => isStartingNode(node));
   const minimumDistances = nodes.map(() => Infinity);
 
-  let steps = 0;
+  let iterations = 0;
   while (minimumDistances.includes(Infinity)) {
     for (let i = 0; i < nodes.length; i++) {
       nodes[i] = getNextNode(
         nodes[i],
-        instructions[steps % instructions.length],
+        instructions[iterations % instructions.length],
         network,
       );
 
       minimumDistances[i] = isFinishingNode(nodes[i])
-        ? Math.min(minimumDistances[i], steps + 1)
+        ? Math.min(minimumDistances[i], iterations + 1)
         : minimumDistances[i];
     }
-    steps++;
+    iterations++;
   }
 
   return minimumDistances.reduce(
