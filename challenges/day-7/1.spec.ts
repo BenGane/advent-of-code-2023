@@ -53,7 +53,7 @@ const computeTotalWinnings = (data: Data) =>
     .reduce((total, { bid }, i) => total + bid * (i + 1), 0);
 
 const parseInputFile = async () => {
-  const input = await readFile(join(__dirname, "2.input.txt"), "utf-8");
+  const input = await readFile(join(__dirname, "1.input.txt"), "utf-8");
   const data: Data = [];
 
   for (const line of input.split("\n")) {
