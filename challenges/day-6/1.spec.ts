@@ -32,6 +32,7 @@ it("works", async () => {
     .trim()
     .split(/\s+/)
     .map((time) => +time);
+    
   const distances = lines[1]
     .split(":")[1]
     .trim()
