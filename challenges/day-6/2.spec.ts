@@ -8,7 +8,13 @@ beforeAll(async () => {
   input = await readFile(join(__dirname, "2.input.txt"), "utf-8");
 });
 
-const waysToBeatRecord = ({ time, distance }: { time: number; distance: number }) => {
+const waysToBeatRecord = ({
+  time,
+  distance,
+}: {
+  time: number;
+  distance: number;
+}) => {
   let numberOfWaysToBeatRecord = 0;
 
   for (let i = 1; i < time; i++) {

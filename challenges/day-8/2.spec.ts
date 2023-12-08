@@ -9,8 +9,12 @@ type Data = { instructions: string; network: Network };
 const isStartingNode = (node: Node) => node.endsWith("A");
 const isFinishingNode = (node: Node) => node.endsWith("Z");
 
-const getGreatestCommonDivisor = (a: number, b: number) => (b === 0 ? a : getGreatestCommonDivisor(b, a % b));
-const getLeastCommonMultiple = (a: number, b: number) => (a * b) / getGreatestCommonDivisor(a, b);
+const getGreatestCommonDivisor = (a: number, b: number) =>
+  b === 0 ? a : getGreatestCommonDivisor(b, a % b);
+
+const getLeastCommonMultiple = (a: number, b: number) =>
+  (a * b) / getGreatestCommonDivisor(a, b);
+
 const getNextNode = (node: Node, instruction: string, network: Network) =>
   network.get(node)![instruction === "L" ? 0 : 1];
 
@@ -21,14 +25,22 @@ const computeSteps = ({ instructions, network }: Data) => {
   let steps = 0;
   while (minimumDistances.includes(Infinity)) {
     for (let i = 0; i < nodes.length; i++) {
-      nodes[i] = getNextNode(nodes[i], instructions[steps % instructions.length], network);
-      minimumDistances[i] = isFinishingNode(nodes[i]) ? Math.min(minimumDistances[i], steps + 1) : minimumDistances[i];
+      nodes[i] = getNextNode(
+        nodes[i],
+        instructions[steps % instructions.length],
+        network,
+      );
+
+      minimumDistances[i] = isFinishingNode(nodes[i])
+        ? Math.min(minimumDistances[i], steps + 1)
+        : minimumDistances[i];
     }
     steps++;
   }
 
   return minimumDistances.reduce(
-    (leastCommonMultiple, distance) => getLeastCommonMultiple(leastCommonMultiple, distance),
+    (leastCommonMultiple, distance) =>
+      getLeastCommonMultiple(leastCommonMultiple, distance),
     1,
   );
 };

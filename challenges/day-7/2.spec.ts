@@ -7,7 +7,10 @@ type Data = { hand: string; bid: number }[];
 const cardHierarchy = "AKQT98765432J";
 
 const getCardMap = (hand: string) =>
-  [...hand].reduce((map, card) => map.set(card, (map.get(card) ?? 0) + 1), new Map<string, number>());
+  [...hand].reduce(
+    (map, card) => map.set(card, (map.get(card) ?? 0) + 1),
+    new Map<string, number>(),
+  );
 
 const getHandRank = (hand: string) => {
   const cardMap = getCardMap(hand);
@@ -30,7 +33,8 @@ const getHandRank = (hand: string) => {
 
 const getBestHandRank = (hand: string) =>
   [...cardHierarchy].reduce(
-    (bestRank, currentCard) => Math.min(getHandRank(hand.replace(/J/g, currentCard)), bestRank),
+    (bestRank, currentCard) =>
+      Math.min(getHandRank(hand.replace(/J/g, currentCard)), bestRank),
     Infinity,
   );
 
@@ -51,7 +55,9 @@ const compareHands = (handA: string, handB: string) => {
 };
 
 const computeTotalWinnings = (data: Data) =>
-  data.sort(({ hand: a }, { hand: b }) => compareHands(a, b)).reduce((total, { bid }, i) => total + bid * (i + 1), 0);
+  data
+    .sort(({ hand: a }, { hand: b }) => compareHands(a, b))
+    .reduce((total, { bid }, i) => total + bid * (i + 1), 0);
 
 const parseInputFile = async () => {
   const input = await readFile(join(__dirname, "2.input.txt"), "utf-8");

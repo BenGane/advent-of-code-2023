@@ -23,9 +23,16 @@ it("works", async () => {
       .trim()
       .split(/\s+/)
       .map((winningNumber) => +winningNumber);
-    const matchingNumbers = myNumbers.filter((myNumber) => winningNumbers.includes(myNumber));
+    const matchingNumbers = myNumbers.filter((myNumber) =>
+      winningNumbers.includes(myNumber),
+    );
 
-    return accumulator + (matchingNumbers.length === 0 ? 0 : Math.pow(2, matchingNumbers.length - 1));
+    return (
+      accumulator +
+      (matchingNumbers.length === 0
+        ? 0
+        : Math.pow(2, matchingNumbers.length - 1))
+    );
   }, 0);
 
   console.log(total);

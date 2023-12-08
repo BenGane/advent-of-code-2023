@@ -27,7 +27,9 @@ it("works", async () => {
     }[] = [];
 
     for (const mapping of mappings) {
-      const [destinationRangeStart, sourceRangeStart, rangeLength] = mapping.split(" ").map((value) => +value);
+      const [destinationRangeStart, sourceRangeStart, rangeLength] = mapping
+        .split(" ")
+        .map((value) => +value);
 
       values.push({ destinationRangeStart, sourceRangeStart, rangeLength });
     }
@@ -49,8 +51,15 @@ it("works", async () => {
       const toKey = Object.keys(mappings[fromKey])[0];
       const values = mappings[fromKey][toKey];
 
-      for (const { destinationRangeStart, sourceRangeStart, rangeLength } of values) {
-        if (location >= sourceRangeStart && location < sourceRangeStart + rangeLength) {
+      for (const {
+        destinationRangeStart,
+        sourceRangeStart,
+        rangeLength,
+      } of values) {
+        if (
+          location >= sourceRangeStart &&
+          location < sourceRangeStart + rangeLength
+        ) {
           location += destinationRangeStart - sourceRangeStart;
           break;
         }
