@@ -4,7 +4,7 @@ import { it } from "vitest";
 
 type Data = { hand: string; bid: number }[];
 
-const cardHierarchy = "AKQJT987654321";
+const cardHierarchy = "AKQJT98765432";
 
 const getCardMap = (hand: string) =>
   [...hand].reduce(
