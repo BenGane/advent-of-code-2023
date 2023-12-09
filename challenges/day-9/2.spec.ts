@@ -22,33 +22,28 @@ const calculatePrediction = (history: Histories[number]) => {
     history = newHistory;
   }
 
-  let prediction = predictionHelper[predictionHelper.length - 1];
-  for (let i = predictionHelper.length - 2; i >= 0; i--) {
-    prediction = predictionHelper[i] - prediction;
-  }
+  return predictionHelper
+    .reverse()
+    .reduce((prediction, value) => value - prediction, 0);
+};
 
-  return prediction;
-} 
-
-const compute = (histories: Histories) => {
-  let total = 0;
-
-  for (const history of histories) {
-    total += calculatePrediction(history);
-  }
-
-  return total;
-}
+const compute = (histories: Histories) =>
+  histories.reduce((total, history) => total + calculatePrediction(history), 0);
 
 const parseInputFile = async () => {
   const input = await readFile(join(__dirname, "2.input.txt"), "utf-8");
-  const histories = input.split("\n").map((history) => history.split(" ").map((number) => Number.parseInt(number)));
+  const histories = input
+    .split("\n")
+    .map((history) =>
+      history.split(" ").map((number) => Number.parseInt(number)),
+    );
+    
   return histories;
 };
 
 it("works", async () => {
   const data = await parseInputFile();
-  const result = compute(data)
+  const result = compute(data);
 
   console.log(result);
 });

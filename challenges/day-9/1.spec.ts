@@ -23,7 +23,7 @@ const calculatePrediction = (history: Histories[number]) => {
   }
 
   return prediction;
-} 
+};
 
 const compute = (histories: Histories) => {
   let total = 0;
@@ -33,17 +33,21 @@ const compute = (histories: Histories) => {
   }
 
   return total;
-}
+};
 
 const parseInputFile = async () => {
   const input = await readFile(join(__dirname, "1.input.txt"), "utf-8");
-  const histories = input.split("\n").map((history) => history.split(" ").map((number) => Number.parseInt(number)));
+  const histories = input
+    .split("\n")
+    .map((history) =>
+      history.split(" ").map((number) => Number.parseInt(number)),
+    );
   return histories;
 };
 
 it("works", async () => {
   const data = await parseInputFile();
-  const result = compute(data)
+  const result = compute(data);
 
   console.log(result);
 });
