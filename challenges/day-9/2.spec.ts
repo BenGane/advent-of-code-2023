@@ -5,10 +5,11 @@ import { it } from "vitest";
 type Histories = number[][];
 
 const calculatePrediction = (history: Histories[number]) => {
-  let prediction = 0;
+  let predictionHelper: number[] = [];
+
 
   for (let i = history.length; i >= 0; i--) {
-    prediction += history[history.length - 1];
+    predictionHelper.push(history[0]);
 
     if (history.every((number) => number === 0)) {
       break;
@@ -20,6 +21,11 @@ const calculatePrediction = (history: Histories[number]) => {
     }
 
     history = newHistory;
+  }
+
+  let prediction = predictionHelper[predictionHelper.length - 1];
+  for (let i = predictionHelper.length - 2; i >= 0; i--) {
+    prediction = predictionHelper[i] - prediction;
   }
 
   return prediction;
