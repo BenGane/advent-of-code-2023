@@ -34,9 +34,7 @@ const parseInputFile = async () => {
   const input = await readFile(join(__dirname, "2.input.txt"), "utf-8");
   const histories = input
     .split("\n")
-    .map((history) =>
-      history.split(" ").map((number) => Number.parseInt(number)),
-    );
+    .map((history) => history.split(" ").map(Number));
 
   return histories;
 };
