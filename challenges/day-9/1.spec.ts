@@ -7,7 +7,7 @@ type Histories = number[][];
 const calculatePrediction = (history: Histories[number]) => {
   let prediction = 0;
 
-  for (let i = history.length; i >= 0; i--) {
+  for (let i = history.length - 1; i >= 0; i--) {
     prediction += history[history.length - 1];
 
     if (history.every((number) => number === 0)) {
@@ -15,7 +15,7 @@ const calculatePrediction = (history: Histories[number]) => {
     }
 
     const newHistory: number[] = [];
-    for (let j = 1; j < i; j++) {
+    for (let j = 1; j <= i; j++) {
       newHistory.push(history[j] - history[j - 1]);
     }
 
