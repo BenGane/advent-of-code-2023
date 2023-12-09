@@ -37,7 +37,7 @@ const parseInputFile = async () => {
     .map((history) =>
       history.split(" ").map((number) => Number.parseInt(number)),
     );
-    
+
   return histories;
 };
 
