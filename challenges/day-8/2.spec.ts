@@ -18,7 +18,7 @@ const getLeastCommonMultiple = (a: number, b: number) =>
 const getNextNode = (node: Node, instruction: string, network: Network) =>
   network.get(node)![instruction === "L" ? 0 : 1];
 
-const getNumberOfStepsToFinishingNode = (
+const getStepsToFinishingNode = (
   node: Node,
   instructions: string,
   network: Network,
@@ -39,7 +39,7 @@ const getNumberOfStepsToFinishingNode = (
 const computeSteps = ({ instructions, network }: Data) => {
   const nodes = [...network.keys()].filter((node) => isStartingNode(node));
   const allSteps = nodes.map((node) =>
-    getNumberOfStepsToFinishingNode(node, instructions, network),
+    getStepsToFinishingNode(node, instructions, network),
   );
 
   return allSteps.reduce(
