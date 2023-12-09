@@ -19,10 +19,9 @@ const computeSteps = ({ instructions, network }: Data) => {
   while (node !== targetNode) {
     node = getNextNode(
       node,
-      instructions[steps % instructions.length],
+      instructions[steps++ % instructions.length],
       network,
     );
-    steps++;
   }
 
   return steps;
