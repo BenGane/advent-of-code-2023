@@ -6,10 +6,10 @@ type Histories = number[][];
 
 const calculatePrediction = (history: Histories[number]) => {
   let predictionHelper: number[] = [];
-  
+
   while (history.some((element) => element !== 0)) {
     predictionHelper.push(history[0]);
-    history = history.slice(1).map((value, index) => value - history[index]);
+    history = history.slice(1).map((value, i) => value - history[i]);
   }
 
   return predictionHelper

@@ -9,7 +9,7 @@ const calculatePrediction = (history: Histories[number]) => {
 
   while (history.some((element) => element !== 0)) {
     prediction += history[history.length - 1];
-    history = history.slice(1).map((value, index) => value - history[index]);
+    history = history.slice(1).map((value, i) => value - history[i]);
   }
 
   return prediction;
