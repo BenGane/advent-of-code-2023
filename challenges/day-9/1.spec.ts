@@ -25,23 +25,17 @@ const calculatePrediction = (history: Histories[number]) => {
   return prediction;
 };
 
-const compute = (histories: Histories) => {
-  let total = 0;
-
-  for (const history of histories) {
-    total += calculatePrediction(history);
-  }
-
-  return total;
-};
+const compute = (histories: Histories) =>
+  histories.reduce((total, history) => total + calculatePrediction(history), 0);
 
 const parseInputFile = async () => {
-  const input = await readFile(join(__dirname, "1.input.txt"), "utf-8");
+  const input = await readFile(join(__dirname, "2.input.txt"), "utf-8");
   const histories = input
     .split("\n")
     .map((history) =>
       history.split(" ").map((number) => Number.parseInt(number)),
     );
+    
   return histories;
 };
 
