@@ -69,9 +69,7 @@ const compute = (data: Data) => {
     const nextPossibleCoordinates = getNextPossibleCoordinates([rowCursor, colCursor], data);
     const selectedCoordinates = nextPossibleCoordinates.find(([rowNext, colNext]) => rowNext !== rowPrev || colNext !== colPrev);
 
-    if (!selectedCoordinates) {
-      break;
-    };
+    if (!selectedCoordinates) break;
 
     [rowPrev, colPrev] = [rowCursor, colCursor]; 
     [rowCursor, colCursor] = selectedCoordinates;
