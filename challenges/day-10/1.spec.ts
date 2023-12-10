@@ -60,12 +60,13 @@ const getStartingCoordinates = (data: Data): Coordinates=> {
 
 const compute = (data: Data) => {
   const [startingRow, startingCol] = getStartingCoordinates(data);
-  const path = [[startingRow, startingCol]];
+  
+  let loopLength = 1;
 
   let [rowPrev, colPrev] = [startingRow, startingCol];
   let [rowCursor, colCursor] = [startingRow, startingCol];
 
-  while (path.length === 1 || !(rowCursor === startingRow && colCursor === startingCol)) {
+  while (loopLength === 1 || !(rowCursor === startingRow && colCursor === startingCol)) {
     const nextPossibleCoordinates = getNextPossibleCoordinates([rowCursor, colCursor], data);
     const selectedCoordinates = nextPossibleCoordinates.find(([rowNext, colNext]) => rowNext !== rowPrev || colNext !== colPrev);
 
@@ -74,12 +75,10 @@ const compute = (data: Data) => {
     [rowPrev, colPrev] = [rowCursor, colCursor]; 
     [rowCursor, colCursor] = selectedCoordinates;
 
-    path.push([rowCursor, colCursor]);
+    loopLength++;
   }
 
-  console.log(path, path.map(([i, j]) => data[i][j]));
-
-  return path.length / 2
+  return loopLength / 2
 };
 
 const parseInputFile = async () => {
