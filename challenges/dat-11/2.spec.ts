@@ -39,7 +39,7 @@ const getRowsAndColsToExpand = (data: Data) => {
   return [rowsToExpand, colsToExpand];
 }
 
-const expansionRate = 10;
+const expansionRate = 1000000;
 
 const getShortestPath = ([rowA, colA]: number[], [rowB, colB]: number[], rowsToExpand: Set<number>, colsToExpand: Set<number>) => {
   [rowA, rowB] = [Math.min(rowA, rowB), Math.max(rowA, rowB)];
