@@ -23,7 +23,7 @@ const getShortestPath = (
   [rowB, colB]: number[],
   expandableRows: Set<number>,
   expandableCols: Set<number>,
-  expansionFactor: number
+  expansionFactor: number,
 ) => {
   [rowA, rowB] = [Math.min(rowA, rowB), Math.max(rowA, rowB)];
   [colA, colB] = [Math.min(colA, colB), Math.max(colA, colB)];
@@ -61,7 +61,7 @@ export const getSumOfShortestPaths = (data: Data, expansionFactor: number) => {
         galaxies[j],
         expandableRows,
         expandableCols,
-        expansionFactor
+        expansionFactor,
       );
     }
   }
