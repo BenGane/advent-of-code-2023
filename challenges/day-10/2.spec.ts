@@ -85,31 +85,45 @@ const getLoopPath = (data: Data): Coordinates[] => {
 const containsCoordinate = (coordinates: Coordinates, path: Coordinates[]) => path.some(([a, b]) => a === coordinates[0] && b === coordinates[1]);
 
 const getNumberOfEnclosedTiles = (data: Data, loopPath: [number, number][]) => {
-  const isEnclosed = (coordinates: Coordinates, visited: Coordinates[]= []) => {
+  const cache = new Map<number, Map<number, boolean>>();
+
+  const isEnclosed = (coordinates: Coordinates, visited: Coordinates[] = []): [boolean, Coordinates[]] => {
     const [row, col] = coordinates;
-    if (containsCoordinate([row, col], visited)) return true;
+
+    if (cache.get(row)?.has(col)) return [!!cache.get(row)?.get(col), visited];
+    if (containsCoordinate([row, col], visited)) return [true, visited];
 
     if (row < 0 || row >= data.length || col < 0 || col >= data[0].length) {
-      return false;
+      return [false, visited];
     } else if (containsCoordinate(coordinates, loopPath)) {
-      return true;
+      return [true, visited];
     }
 
     visited.push(coordinates);
 
-    const left = isEnclosed([row, col - 1], visited);
-    const right = isEnclosed([row, col + 1], visited);
-    const up = isEnclosed([row - 1, col], visited);
-    const down = isEnclosed([row + 1, col], visited);
+    const [left] = isEnclosed([row, col - 1], visited);
+    const [right] = isEnclosed([row, col + 1], visited);
+    const [up] = isEnclosed([row - 1, col], visited);
+    const [down] = isEnclosed([row + 1, col], visited);
 
-    return left && right && up && down;
+    return [left && right && up && down, visited];
   }
 
   let count = 0;
   for (let i = 0; i < data.length; i++) {
     for (let j = 1; j < data[i].length - 1; j++) {
-      if (!containsCoordinate([i, j], loopPath) && data[i][j] !== '*' && isEnclosed([i, j])) {
-        count++;
+      if (!containsCoordinate([i, j], loopPath) && data[i][j] !== '*') {
+        const [enclosed, visited] = isEnclosed([i, j]);
+
+        if (!cache.get(visited[0]?.[0])?.has(visited[0]?.[1])) {
+          visited.forEach(([row, col]) => {
+            const map = cache.get(row) ?? new Map<number, boolean>();
+            cache.set(row, map);
+            map.set(col, enclosed);
+          });
+        }
+
+        enclosed && count++;
       }
     }
   }
@@ -170,8 +184,6 @@ const compute = (data: Data) => {
   const originalLoopPath = getLoopPath(data);
 
   const newLoopPath = updateNewSolutionSpace(newSolutionSpace, originalLoopPath);
-  newSolutionSpace.forEach((row) => console.log(row.join(" ")));
-
   return getNumberOfEnclosedTiles(newSolutionSpace, newLoopPath);
 };
 
@@ -184,5 +196,5 @@ it("works", async () => {
   const data = await parseInputFile();
   const result = compute(data);
 
-  console.log(result);
+  console.log('Day 10 part 2', result);
 });
