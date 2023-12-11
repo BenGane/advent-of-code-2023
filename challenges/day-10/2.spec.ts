@@ -158,9 +158,8 @@ const getNumberOfEnclosedTiles = (data: Data) => {
       }
 
       const [enclosed, visited] = isEnclosed([i, j]);
-      const [visitedRow, visitedCol] = visited[0] ?? [-1, -1];
 
-      if (!resultsCache.get(visitedRow)?.has(visitedCol)) {
+      if (!resultsCache.get(i)?.has(j)) {
         cacheResults(visited, enclosed);
       }
 
