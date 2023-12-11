@@ -114,8 +114,9 @@ const getNumberOfEnclosedTiles = (data: Data, loopPath: [number, number][]) => {
     for (let j = 1; j < data[i].length - 1; j++) {
       if (!containsCoordinate([i, j], loopPath) && data[i][j] !== '*') {
         const [enclosed, visited] = isEnclosed([i, j]);
+        const [visitedRow, visitedCol] = visited[0] ?? [-1, -1];
 
-        if (!cache.get(visited[0]?.[0])?.has(visited[0]?.[1])) {
+        if (!cache.get(visitedRow)?.has(visitedCol)) {
           visited.forEach(([row, col]) => {
             const map = cache.get(row) ?? new Map<number, boolean>();
             cache.set(row, map);
@@ -130,22 +131,22 @@ const getNumberOfEnclosedTiles = (data: Data, loopPath: [number, number][]) => {
   return count;
 }
 
-const createNewSolutionSpace = (data: Data) => {
-  const solutionSpace: string[][] = [];
+const createExpandedGrid = (data: Data) => {
+  const expandedGrid: string[][] = [];
   for (let i = 0; i < data.length * factor; i++) {
-    solutionSpace.push([])
+    expandedGrid.push([])
     for (let j = 0; j < data[0].length * factor; j++) {
       if (i % factor === 0 && j % factor === 0) {
-        solutionSpace[i].push(data[Math.floor(i / factor)][Math.floor(j / factor)]);
+        expandedGrid[i].push(data[Math.floor(i / factor)][Math.floor(j / factor)]);
       } else {
-        solutionSpace[i].push('*')
+        expandedGrid[i].push('*')
       }
     }
   }
-  return solutionSpace;
+  return expandedGrid;
 } 
 
-const updateNewSolutionSpace = (data: Data, originalLoopPath: Coordinates[]): Coordinates[] => {
+const updateExpandedGrid = (data: Data, originalLoopPath: Coordinates[]): Coordinates[] => {
   const mappedOriginalLoopPath: Coordinates[] = originalLoopPath.map(([row, col]) => [row * factor, col * factor]);
   const newLoopPath: Coordinates[] = [];
   
@@ -171,8 +172,6 @@ const updateNewSolutionSpace = (data: Data, originalLoopPath: Coordinates[]): Co
         data[aX][j] = '-';
         newLoopPath.push([aX, j]);
       }
-    } else {
-      throw new Error("Impossible...");
     }
   }
 
@@ -180,11 +179,10 @@ const updateNewSolutionSpace = (data: Data, originalLoopPath: Coordinates[]): Co
 }
 
 const compute = (data: Data) => {
-  const newSolutionSpace = createNewSolutionSpace(data);
+  const expandedGrid = createExpandedGrid(data);
   const originalLoopPath = getLoopPath(data);
-
-  const newLoopPath = updateNewSolutionSpace(newSolutionSpace, originalLoopPath);
-  return getNumberOfEnclosedTiles(newSolutionSpace, newLoopPath);
+  const newLoopPath = updateExpandedGrid(expandedGrid, originalLoopPath);
+  return getNumberOfEnclosedTiles(expandedGrid, newLoopPath);
 };
 
 const parseInputFile = async () => {
