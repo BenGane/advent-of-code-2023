@@ -46,16 +46,16 @@ const getShortestPath = (
 
 export const getSumOfShortestPaths = (data: Data, expansionFactor: number) => {
   const [expandedRows, expandedCols] = getExpandedRowsAndCols(data);
-  const galaxies = data
+  const galaxyCoordinates = data
     .flatMap((row, i) => row.map((_, j) => [i, j]))
     .filter(([i, j]) => data[i][j] === galaxy);
 
   let sum = 0;
-  for (let i = 0; i < galaxies.length; i++) {
-    for (let j = i + 1; j < galaxies.length; j++) {
+  for (let i = 0; i < galaxyCoordinates.length; i++) {
+    for (let j = i + 1; j < galaxyCoordinates.length; j++) {
       sum += getShortestPath(
-        galaxies[i],
-        galaxies[j],
+        galaxyCoordinates[i],
+        galaxyCoordinates[j],
         expandedRows,
         expandedCols,
         expansionFactor,
