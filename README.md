@@ -4,9 +4,7 @@ These are my TypeScript solutions for the [Advent of Code](https://adventofcode.
 
 ## Structure examples
 
-- [`challenges/day-8/1.input.txt`](./challenges/day-8/1.input.txt) - input for the eighth day challenge of 2023 year
 - [`challenges/day-8/1.spec.ts`](./challenges/day-8/1.spec.ts) - solution for the eighth day challenge of 2023 year (in a form of a test so I get quick reruns on save)
-- [`challenges/day-9/1.spec.ts`](./challenges/day-9/1.spec.ts) - solution for the first part of the ninth day challenge of 2023 year
 
 ## Usage
 
