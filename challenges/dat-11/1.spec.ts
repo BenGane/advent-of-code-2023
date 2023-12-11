@@ -76,13 +76,15 @@ const getSumOfShortestPaths = (data: Data) => {
 
   let sum = 0;
   for (let i = 0; i < galaxies.length; i++) {
-    const galaxyA = galaxies[i];
     for (let j = i + 1; j < galaxies.length; j++) {
-      const galaxyB = galaxies[j];
-      sum += getShortestPath(galaxyA, galaxyB, rowsToExpand, colsToExpand);
+      sum += getShortestPath(
+        galaxies[i],
+        galaxies[j],
+        rowsToExpand,
+        colsToExpand,
+      );
     }
   }
-
   return sum;
 };
 
