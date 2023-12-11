@@ -105,9 +105,9 @@ const getLoopPath = (data: Data): Coordinates[] => {
 
 const getKey = ([row, col]: Coordinates) => `${row},${col}`;
 
-const getNumberOfEnclosedTiles = (data: Data, loopPath: Coordinates[]) => {
+const getNumberOfEnclosedTiles = (data: Data) => {
   const resultsCache = new Map<number, Map<number, boolean>>();
-  const loopPathSet = new Set<string>(loopPath.map(getKey));
+  const loopPathSet = new Set<string>(getLoopPath(data).map(getKey));
 
   const isEnclosed = (
     coordinates: Coordinates,
@@ -187,21 +187,15 @@ const createExpandedGrid = (data: Data) => {
   return expandedGrid;
 };
 
-const updateExpandedGrid = (
-  data: Data,
-  originalLoopPath: Coordinates[],
-): Coordinates[] => {
+const updateExpandedGrid = (data: Data, originalLoopPath: Coordinates[]) => {
   const mappedOriginalLoopPath: Coordinates[] = originalLoopPath.map(
     ([row, col]) => [row * expansionFactor, col * expansionFactor],
   );
-  const newLoopPath: Coordinates[] = [];
 
   for (let i = 0; i < mappedOriginalLoopPath.length; i++) {
     const [aX, aY] = mappedOriginalLoopPath[i];
     const [bX, bY] =
       mappedOriginalLoopPath[(i + 1) % mappedOriginalLoopPath.length];
-
-    newLoopPath.push([aX, aY]);
 
     if (aX !== bX) {
       const start = Math.min(aX, bX) + 1;
@@ -209,7 +203,6 @@ const updateExpandedGrid = (
 
       for (let j = start; j <= finish; j++) {
         data[j][aY] = "|";
-        newLoopPath.push([j, aY]);
       }
     } else if (aY !== bY) {
       const start = Math.min(aY, bY) + 1;
@@ -217,19 +210,15 @@ const updateExpandedGrid = (
 
       for (let j = start; j <= finish; j++) {
         data[aX][j] = "-";
-        newLoopPath.push([aX, j]);
       }
     }
   }
-
-  return newLoopPath;
 };
 
 const compute = (data: Data) => {
-  const originalLoopPath = getLoopPath(data);
   const expandedGrid = createExpandedGrid(data);
-  const newLoopPath = updateExpandedGrid(expandedGrid, originalLoopPath);
-  return getNumberOfEnclosedTiles(expandedGrid, newLoopPath);
+  updateExpandedGrid(expandedGrid, getLoopPath(data));
+  return getNumberOfEnclosedTiles(expandedGrid);
 };
 
 const parseInputFile = async () => {
