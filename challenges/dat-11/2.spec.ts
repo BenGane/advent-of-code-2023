@@ -57,9 +57,12 @@ const getShortestPath = (
     (col) => col > colA && col < colB,
   ).length;
 
+  const rowDifference = rowB - rowA;
+  const colDifference = colB - colA;
+
   return (
-    Math.abs(rowA - rowB) +
-    Math.abs(colA - colB) +
+    rowDifference +
+    colDifference +
     (expansionFactor - 1) * (rowDilationFactor + colDilationFactor)
   );
 };
