@@ -8,8 +8,17 @@ const galaxy = "#";
 const expansionFactor = 2;
 
 const getRowsAndColsToExpand = (data: Data) => {
-  const rowsToExpand = new Set<number>(data.map((_, index) => index).filter((index) => !data[index].includes(galaxy)));
-  const colsToExpand = new Set<number>(data[0].map((_, index) => index).filter((col) => data.every((row) => row[col] !== galaxy)));
+  const rowsToExpand = new Set<number>(
+    data
+      .map((_, index) => index)
+      .filter((index) => !data[index].includes(galaxy)),
+  );
+  
+  const colsToExpand = new Set<number>(
+    data[0]
+      .map((_, index) => index)
+      .filter((col) => data.every((row) => row[col] !== galaxy)),
+  );
 
   return [rowsToExpand, colsToExpand];
 };
