@@ -4,15 +4,13 @@ const galaxy = "#";
 
 const getExpandableRowsAndCols = (data: Data) => {
   const expandableRows = new Set<number>(
-    data
-      .map((_, index) => index)
-      .filter((index) => !data[index].includes(galaxy)),
+    data.map((_, i) => i).filter((i) => !data[i].includes(galaxy)),
   );
 
   const expandableCols = new Set<number>(
     data[0]
-      .map((_, index) => index)
-      .filter((index) => data.every((row) => row[index] !== galaxy)),
+      .map((_, i) => i)
+      .filter((i) => data.every((row) => row[i] !== galaxy)),
   );
 
   return [expandableRows, expandableCols];
@@ -49,7 +47,7 @@ const getShortestPath = (
 export const getSumOfShortestPaths = (data: Data, expansionFactor: number) => {
   const galaxies = data
     .flatMap((row, i) => row.map((_, j) => [i, j]))
-    .filter(([row, col]) => data[row][col] === galaxy);
+    .filter(([i, j]) => data[i][j] === galaxy);
 
   const [expandableRows, expandableCols] = getExpandableRowsAndCols(data);
 
