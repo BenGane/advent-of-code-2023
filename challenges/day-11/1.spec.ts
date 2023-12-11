@@ -1,9 +1,9 @@
 import { readFile } from "fs/promises";
 import { join } from "path";
 import { it } from "vitest";
-import { getSumOfShortestPaths } from "./code";
+import { getSumOfShortestPaths, Data } from "./code";
 
-const parseInputFile = async () => {
+const parseInputFile = async (): Promise<Data> => {
   const input = await readFile(join(__dirname, "1.input.txt"), "utf-8");
   return input.split("\n").map((line) => [...line]);
 };
