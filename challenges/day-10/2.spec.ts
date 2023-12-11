@@ -187,7 +187,10 @@ const createExpandedGrid = (data: Data) => {
   return expandedGrid;
 };
 
-const updateExpandedGridLoop = (data: Data, originalLoopPath: Coordinates[]) => {
+const updateExpandedGridLoop = (
+  data: Data,
+  originalLoopPath: Coordinates[],
+) => {
   const mappedOriginalLoopPath: Coordinates[] = originalLoopPath.map(
     ([row, col]) => [row * expansionFactor, col * expansionFactor],
   );
