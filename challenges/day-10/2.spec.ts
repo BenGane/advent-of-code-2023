@@ -187,7 +187,7 @@ const createExpandedGrid = (data: Data) => {
   return expandedGrid;
 };
 
-const updateExpandedGrid = (data: Data, originalLoopPath: Coordinates[]) => {
+const updateExpandedGridLoop = (data: Data, originalLoopPath: Coordinates[]) => {
   const mappedOriginalLoopPath: Coordinates[] = originalLoopPath.map(
     ([row, col]) => [row * expansionFactor, col * expansionFactor],
   );
@@ -217,7 +217,7 @@ const updateExpandedGrid = (data: Data, originalLoopPath: Coordinates[]) => {
 
 const compute = (data: Data) => {
   const expandedGrid = createExpandedGrid(data);
-  updateExpandedGrid(expandedGrid, getLoopPath(data));
+  updateExpandedGridLoop(expandedGrid, getLoopPath(data));
   return getNumberOfEnclosedTiles(expandedGrid);
 };
 
