@@ -1,4 +1,4 @@
-export type Data = string[][];
+type Data = string[][];
 
 const galaxy = "#";
 
