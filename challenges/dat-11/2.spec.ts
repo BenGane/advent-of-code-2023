@@ -4,7 +4,8 @@ import { it } from "vitest";
 
 type Data = string[][];
 
-const galaxy = '#';
+const galaxy = "#";
+const expansionFactor = 1000000;
 
 const getRowsAndColsToExpand = (data: Data) => {
   const rowsToExpand = new Set<number>();
@@ -37,22 +38,37 @@ const getRowsAndColsToExpand = (data: Data) => {
   }
 
   return [rowsToExpand, colsToExpand];
-}
+};
 
-const expansionRate = 1000000;
-
-const getShortestPath = ([rowA, colA]: number[], [rowB, colB]: number[], rowsToExpand: Set<number>, colsToExpand: Set<number>) => {
+const getShortestPath = (
+  [rowA, colA]: number[],
+  [rowB, colB]: number[],
+  rowsToExpand: Set<number>,
+  colsToExpand: Set<number>,
+) => {
   [rowA, rowB] = [Math.min(rowA, rowB), Math.max(rowA, rowB)];
   [colA, colB] = [Math.min(colA, colB), Math.max(colA, colB)];
 
-  const rowDilation = [...rowsToExpand].filter((row) => row > rowA && row < rowB).length; 
-  const colDilation = [...colsToExpand].filter((col) => col > colA && col < colB).length; 
+  const rowDilationFactor = [...rowsToExpand].filter(
+    (row) => row > rowA && row < rowB,
+  ).length;
 
-  return Math.abs(rowA - rowB) + Math.abs(colA - colB) + (expansionRate - 1) * (rowDilation + colDilation);
-}
+  const colDilationFactor = [...colsToExpand].filter(
+    (col) => col > colA && col < colB,
+  ).length;
+
+  return (
+    Math.abs(rowA - rowB) +
+    Math.abs(colA - colB) +
+    (expansionFactor - 1) * (rowDilationFactor + colDilationFactor)
+  );
+};
 
 const getSumOfShortestPaths = (data: Data) => {
-  const galaxies = data.flatMap((row, i) => row.map((_, j) => [i, j])).filter(([row, col]) => data[row][col] === galaxy);
+  const galaxies = data
+    .flatMap((row, i) => row.map((_, j) => [i, j]))
+    .filter(([row, col]) => data[row][col] === galaxy);
+
   const [rowsToExpand, colsToExpand] = getRowsAndColsToExpand(data);
 
   let sum = 0;
@@ -65,7 +81,7 @@ const getSumOfShortestPaths = (data: Data) => {
   }
 
   return sum;
-}
+};
 
 const parseInputFile = async () => {
   const input = await readFile(join(__dirname, "2.input.txt"), "utf-8");

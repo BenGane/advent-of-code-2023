@@ -4,9 +4,10 @@ import { it } from "vitest";
 
 type Data = string[][];
 
-const galaxy = '#';
+const galaxy = "#";
+const expansionFactor = 2;
 
-const expandSpace = (data: Data) => {
+const getRowsAndColsToExpand = (data: Data) => {
   const rowsToExpand = new Set<number>();
   const colsToExpand = new Set<number>();
 
@@ -36,69 +37,60 @@ const expandSpace = (data: Data) => {
     }
   }
 
-  const space: Data = [];
-  const emptyRow: string[] = [];
-  const numRows = data.length + colsToExpand.size;
+  return [rowsToExpand, colsToExpand];
+};
 
-  for (let i = 0; i < numRows; i++) {
-    emptyRow.push('.');
-  }
+const getShortestPath = (
+  [rowA, colA]: number[],
+  [rowB, colB]: number[],
+  rowsToExpand: Set<number>,
+  colsToExpand: Set<number>,
+) => {
+  [rowA, rowB] = [Math.min(rowA, rowB), Math.max(rowA, rowB)];
+  [colA, colB] = [Math.min(colA, colB), Math.max(colA, colB)];
 
+  const rowDilationFactor = [...rowsToExpand].filter(
+    (row) => row > rowA && row < rowB,
+  ).length;
 
-  for (let i = 0; i < data.length; i++) {
-    space.push([...emptyRow]);
+  const colDilationFactor = [...colsToExpand].filter(
+    (col) => col > colA && col < colB,
+  ).length;
 
-    if (rowsToExpand.has(i)) {
-      space.push([...emptyRow]);
-      continue;
-    }
-
-    let col = 0;
-    const row = space[space.length - 1];
-
-    for (let j = 0; j < data[i].length; j++) {
-      if (colsToExpand.has(j)) {
-        row[col++] = '.';
-        row[col++] = '.';
-      } else {
-        row[col++] = data[i][j];
-      }
-    }
-  }
-
-  return space
-}
-
-const getShortestPath = ([rowA, colA]: number[], [rowB, colB]: number[]) => Math.abs(rowA - rowB) + Math.abs(colA - colB);
+  return (
+    Math.abs(rowA - rowB) +
+    Math.abs(colA - colB) +
+    (expansionFactor - 1) * (rowDilationFactor + colDilationFactor)
+  );
+};
 
 const getSumOfShortestPaths = (data: Data) => {
-  const galaxies = data.flatMap((row, i) => row.map((_, j) => [i, j])).filter(([row, col]) => data[row][col] === galaxy);
-  
+  const galaxies = data
+    .flatMap((row, i) => row.map((_, j) => [i, j]))
+    .filter(([row, col]) => data[row][col] === galaxy);
+
+  const [rowsToExpand, colsToExpand] = getRowsAndColsToExpand(data);
+
   let sum = 0;
   for (let i = 0; i < galaxies.length; i++) {
     const galaxyA = galaxies[i];
     for (let j = i + 1; j < galaxies.length; j++) {
       const galaxyB = galaxies[j];
-      sum += getShortestPath(galaxyA, galaxyB);
+      sum += getShortestPath(galaxyA, galaxyB, rowsToExpand, colsToExpand);
     }
   }
 
   return sum;
-}
-
-const compute = (data: Data) => {
-  const expandedSpace = expandSpace(data);
-  return getSumOfShortestPaths(expandedSpace);
 };
 
 const parseInputFile = async () => {
-  const input = await readFile(join(__dirname, "1.input.txt"), "utf-8");
+  const input = await readFile(join(__dirname, "2.input.txt"), "utf-8");
   return input.split("\n").map((line) => [...line]);
 };
 
 it("works", async () => {
   const data = await parseInputFile();
-  const result = compute(data);
+  const result = getSumOfShortestPaths(data);
 
   console.log(result);
 });
