@@ -3,11 +3,11 @@ type Data = string[][];
 const galaxy = "#";
 
 const getExpandedRowsAndCols = (data: Data) => {
-  const expandedRows = new Set<number>(
+  const expandedRows = new Set(
     data.map((_, i) => i).filter((i) => !data[i].includes(galaxy)),
   );
 
-  const expandedCols = new Set<number>(
+  const expandedCols = new Set(
     data[0]
       .map((_, i) => i)
       .filter((i) => data.every((row) => row[i] !== galaxy)),
