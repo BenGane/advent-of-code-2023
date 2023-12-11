@@ -5,16 +5,16 @@ import { it } from "vitest";
 type Data = string[][];
 type Coordinates = [number, number];
 
-const isStartingPosition = (position: string) => position === 'S';
+const isStartingPosition = (position: string) => position === "S";
 
 const pipeMap: Record<string, string | undefined> = {
-  '|': 'NS',
-  '-': 'EW',
-  'L': 'NE',
-  'J': 'NW',
-  '7': 'SW',
-  'F': 'SE',
-}
+  "|": "NS",
+  "-": "EW",
+  L: "NE",
+  J: "NW",
+  "7": "SW",
+  F: "SE",
+};
 
 const getNextPossibleCoordinates = (coordinates: Coordinates, data: Data) => {
   const [row, col] = coordinates;
@@ -27,26 +27,38 @@ const getNextPossibleCoordinates = (coordinates: Coordinates, data: Data) => {
 
   const possibleCoordinates: Coordinates[] = [];
 
-  if ((isStartingPosition(pipe) || pipeMap[pipe]?.includes("W")) && pipeMap[left]?.includes("E")) {
+  if (
+    (isStartingPosition(pipe) || pipeMap[pipe]?.includes("W")) &&
+    pipeMap[left]?.includes("E")
+  ) {
     possibleCoordinates.push([row, col - 1]);
   }
 
-  if ((isStartingPosition(pipe) || pipeMap[pipe]?.includes("E")) && pipeMap[right]?.includes("W")) {
+  if (
+    (isStartingPosition(pipe) || pipeMap[pipe]?.includes("E")) &&
+    pipeMap[right]?.includes("W")
+  ) {
     possibleCoordinates.push([row, col + 1]);
   }
 
-  if ((isStartingPosition(pipe) || pipeMap[pipe]?.includes("N")) && pipeMap[up]?.includes("S")) {
+  if (
+    (isStartingPosition(pipe) || pipeMap[pipe]?.includes("N")) &&
+    pipeMap[up]?.includes("S")
+  ) {
     possibleCoordinates.push([row - 1, col]);
   }
 
-  if ((isStartingPosition(pipe) || pipeMap[pipe]?.includes("S")) && pipeMap[down]?.includes("N")) {
+  if (
+    (isStartingPosition(pipe) || pipeMap[pipe]?.includes("S")) &&
+    pipeMap[down]?.includes("N")
+  ) {
     possibleCoordinates.push([row + 1, col]);
   }
 
   return possibleCoordinates;
-}
+};
 
-const getStartingCoordinates = (data: Data): Coordinates=> {
+const getStartingCoordinates = (data: Data): Coordinates => {
   for (let i = 0; i < data.length; i++) {
     for (let j = 0; j < data[i].length; j++) {
       if (isStartingPosition(data[i][j])) {
@@ -56,29 +68,37 @@ const getStartingCoordinates = (data: Data): Coordinates=> {
   }
 
   throw new Error("No starting position found...");
-}
+};
 
 const compute = (data: Data) => {
   const [startingRow, startingCol] = getStartingCoordinates(data);
-  
+
   let loopLength = 1;
 
   let [rowPrev, colPrev] = [startingRow, startingCol];
   let [rowCursor, colCursor] = [startingRow, startingCol];
 
-  while (loopLength === 1 || !(rowCursor === startingRow && colCursor === startingCol)) {
-    const nextPossibleCoordinates = getNextPossibleCoordinates([rowCursor, colCursor], data);
-    const selectedCoordinates = nextPossibleCoordinates.find(([rowNext, colNext]) => rowNext !== rowPrev || colNext !== colPrev);
+  while (
+    loopLength === 1 ||
+    !(rowCursor === startingRow && colCursor === startingCol)
+  ) {
+    const nextPossibleCoordinates = getNextPossibleCoordinates(
+      [rowCursor, colCursor],
+      data,
+    );
+    const selectedCoordinates = nextPossibleCoordinates.find(
+      ([rowNext, colNext]) => rowNext !== rowPrev || colNext !== colPrev,
+    );
 
     if (!selectedCoordinates) break;
 
-    [rowPrev, colPrev] = [rowCursor, colCursor]; 
+    [rowPrev, colPrev] = [rowCursor, colCursor];
     [rowCursor, colCursor] = selectedCoordinates;
 
     loopLength++;
   }
 
-  return loopLength / 2
+  return loopLength / 2;
 };
 
 const parseInputFile = async () => {
