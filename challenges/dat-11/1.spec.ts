@@ -7,36 +7,36 @@ type Data = string[][];
 const galaxy = "#";
 const expansionFactor = 2;
 
-const getRowsAndColsToExpand = (data: Data) => {
-  const rowsToExpand = new Set<number>(
+const getExpandableRowsAndCols = (data: Data) => {
+  const expandableRows = new Set<number>(
     data
       .map((_, index) => index)
       .filter((index) => !data[index].includes(galaxy)),
   );
-  
-  const colsToExpand = new Set<number>(
+
+  const expandableCols = new Set<number>(
     data[0]
       .map((_, index) => index)
-      .filter((col) => data.every((row) => row[col] !== galaxy)),
+      .filter((index) => data.every((row) => row[index] !== galaxy)),
   );
 
-  return [rowsToExpand, colsToExpand];
+  return [expandableRows, expandableCols];
 };
 
 const getShortestPath = (
   [rowA, colA]: number[],
   [rowB, colB]: number[],
-  rowsToExpand: Set<number>,
-  colsToExpand: Set<number>,
+  expandableRows: Set<number>,
+  expandableCols: Set<number>,
 ) => {
   [rowA, rowB] = [Math.min(rowA, rowB), Math.max(rowA, rowB)];
   [colA, colB] = [Math.min(colA, colB), Math.max(colA, colB)];
 
-  const rowDilationFactor = [...rowsToExpand].filter(
+  const rowDilationFactor = [...expandableRows].filter(
     (row) => row > rowA && row < rowB,
   ).length;
 
-  const colDilationFactor = [...colsToExpand].filter(
+  const colDilationFactor = [...expandableCols].filter(
     (col) => col > colA && col < colB,
   ).length;
 
@@ -55,7 +55,7 @@ const getSumOfShortestPaths = (data: Data) => {
     .flatMap((row, i) => row.map((_, j) => [i, j]))
     .filter(([row, col]) => data[row][col] === galaxy);
 
-  const [rowsToExpand, colsToExpand] = getRowsAndColsToExpand(data);
+  const [expandableRows, expandableCols] = getExpandableRowsAndCols(data);
 
   let sum = 0;
   for (let i = 0; i < galaxies.length; i++) {
@@ -63,8 +63,8 @@ const getSumOfShortestPaths = (data: Data) => {
       sum += getShortestPath(
         galaxies[i],
         galaxies[j],
-        rowsToExpand,
-        colsToExpand,
+        expandableRows,
+        expandableCols,
       );
     }
   }
