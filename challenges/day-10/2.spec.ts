@@ -5,21 +5,25 @@ import { it } from "vitest";
 type Data = string[][];
 type Coordinates = [number, number];
 
-const isStartingPosition = (position: string) => position === "S";
-
 const pipeMap: Record<string, string | undefined> = {
   "|": "NS",
   "-": "EW",
+  "7": "SW",
   L: "NE",
   J: "NW",
-  "7": "SW",
   F: "SE",
 };
 
 const expansionFactor = 2;
 const expansionPlaceholder = "*";
 
-const getNextCoordinates = (data: Data, [row, col]: Coordinates, [rowPrev, colPrev]: Coordinates) => {
+const isStartingPosition = (position: string) => position === "S";
+
+const getNextCoordinates = (
+  data: Data,
+  [row, col]: Coordinates,
+  [rowPrev, colPrev]: Coordinates,
+) => {
   const pipe = data[row][col];
 
   const left = data[row][col - 1];

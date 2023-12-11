@@ -5,19 +5,22 @@ import { it } from "vitest";
 type Data = string[][];
 type Coordinates = [number, number];
 
-const isStartingPosition = (position: string) => position === "S";
-
 const pipeMap: Record<string, string | undefined> = {
   "|": "NS",
   "-": "EW",
+  "7": "SW",
   L: "NE",
   J: "NW",
-  "7": "SW",
   F: "SE",
 };
 
-const getNextPossibleCoordinates = (coordinates: Coordinates, data: Data) => {
-  const [row, col] = coordinates;
+const isStartingPosition = (position: string) => position === "S";
+
+const getNextCoordinates = (
+  data: Data,
+  [row, col]: Coordinates,
+  [rowPrev, colPrev]: Coordinates,
+) => {
   const pipe = data[row][col];
 
   const left = data[row][col - 1];
@@ -55,7 +58,9 @@ const getNextPossibleCoordinates = (coordinates: Coordinates, data: Data) => {
     possibleCoordinates.push([row + 1, col]);
   }
 
-  return possibleCoordinates;
+  return possibleCoordinates.find(
+    ([row, col]) => row !== rowPrev || col !== colPrev,
+  );
 };
 
 const getStartingCoordinates = (data: Data): Coordinates => {
@@ -78,25 +83,20 @@ const compute = (data: Data) => {
   let [rowPrev, colPrev] = [startingRow, startingCol];
   let [rowCursor, colCursor] = [startingRow, startingCol];
 
-  while (
-    loopLength === 1 ||
-    !(rowCursor === startingRow && colCursor === startingCol)
-  ) {
-    const nextPossibleCoordinates = getNextPossibleCoordinates(
-      [rowCursor, colCursor],
+  do {
+    const nextCoordinates = getNextCoordinates(
       data,
-    );
-    const selectedCoordinates = nextPossibleCoordinates.find(
-      ([rowNext, colNext]) => rowNext !== rowPrev || colNext !== colPrev,
+      [rowCursor, colCursor],
+      [rowPrev, colPrev],
     );
 
-    if (!selectedCoordinates) break;
+    if (!nextCoordinates) break;
 
     [rowPrev, colPrev] = [rowCursor, colCursor];
-    [rowCursor, colCursor] = selectedCoordinates;
+    [rowCursor, colCursor] = nextCoordinates;
 
     loopLength++;
-  }
+  } while (rowCursor !== startingRow || colCursor !== startingCol);
 
   return loopLength / 2;
 };
